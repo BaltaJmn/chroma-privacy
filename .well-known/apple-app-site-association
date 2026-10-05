@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["TEAM_ID.com.baltajmn.color"],
+        "appIDs": ["BR5ZH8XYP6.com.baltajmn.color"],
         "components": [{ "/": "/i/*" }]
       }
     ]

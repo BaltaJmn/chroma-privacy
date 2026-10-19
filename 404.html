@@ -49,19 +49,21 @@
   // with the app installed the link never gets here, it opens the app instead.
   var APP_STORE_ID = "6819301462";
   var T = {
-    en: ["You have been invited to Chroma", "One photo a day, one color you choose. Install Chroma, then open this link again to send the request.", "This page does not exist."],
-    es: ["Te han invitado a Chroma", "Una foto al día, un color que eliges. Instala Chroma y vuelve a abrir este enlace para enviar la solicitud.", "Esta página no existe."],
-    pt: ["Você foi convidado para o Chroma", "Uma foto por dia, uma cor que você escolhe. Instale o Chroma e abra este link de novo para enviar o pedido.", "Esta página não existe."],
-    de: ["Du wurdest zu Chroma eingeladen", "Ein Foto am Tag, eine Farbe, die du wählst. Installiere Chroma und öffne diesen Link dann noch einmal, um die Anfrage zu senden.", "Diese Seite gibt es nicht."],
-    fr: ["On t'a invité sur Chroma", "Une photo par jour, une couleur que tu choisis. Installe Chroma, puis rouvre ce lien pour envoyer la demande.", "Cette page n'existe pas."]
+    en: ["You have been invited to Chroma", "One photo a day, one color you choose. Install Chroma, then open this link again to send the request.", "This page does not exist.", "You have been invited to a group on Chroma", "One photo a day, one color you choose. Install Chroma, then open this link again to join the group."],
+    es: ["Te han invitado a Chroma", "Una foto al día, un color que eliges. Instala Chroma y vuelve a abrir este enlace para enviar la solicitud.", "Esta página no existe.", "Te han invitado a un grupo en Chroma", "Una foto al día, un color que eliges. Instala Chroma y vuelve a abrir este enlace para entrar en el grupo."],
+    pt: ["Você foi convidado para o Chroma", "Uma foto por dia, uma cor que você escolhe. Instale o Chroma e abra este link de novo para enviar o pedido.", "Esta página não existe.", "Você foi convidado para um grupo no Chroma", "Uma foto por dia, uma cor que você escolhe. Instale o Chroma e abra este link de novo para entrar no grupo."],
+    de: ["Du wurdest zu Chroma eingeladen", "Ein Foto am Tag, eine Farbe, die du wählst. Installiere Chroma und öffne diesen Link dann noch einmal, um die Anfrage zu senden.", "Diese Seite gibt es nicht.", "Du wurdest in eine Gruppe auf Chroma eingeladen", "Ein Foto am Tag, eine Farbe, die du wählst. Installiere Chroma und öffne diesen Link dann noch einmal, um der Gruppe beizutreten."],
+    fr: ["On t'a invité sur Chroma", "Une photo par jour, une couleur que tu choisis. Installe Chroma, puis rouvre ce lien pour envoyer la demande.", "Cette page n'existe pas.", "On t'a invité dans un groupe sur Chroma", "Une photo par jour, une couleur que tu choisis. Installe Chroma, puis rouvre ce lien pour rejoindre le groupe."]
   };
   var lang = (navigator.language || "en").slice(0, 2);
   var t = T[lang] || T.en;
   document.documentElement.lang = T[lang] ? lang : "en";
-  var invite = /^\/i\/[0-9a-fA-F]{10}\/?$/.test(location.pathname);
+  // A friend's link is /i/<code>; a group's, /i/g<code> (docs/tecnico.md 9.5 of BaltaJmn/color).
+  var invite = /^\/i\/(g?)[0-9a-fA-F]{10}\/?$/.exec(location.pathname);
   if (invite) {
-    document.getElementById("title").textContent = t[0];
-    document.getElementById("text").textContent = t[1];
+    var group = invite[1] === "g";
+    document.getElementById("title").textContent = t[group ? 3 : 0];
+    document.getElementById("text").textContent = t[group ? 4 : 1];
     document.getElementById("stores").hidden = false;
     var apple = document.getElementById("appstore");
     if (APP_STORE_ID) apple.href = "https://apps.apple.com/app/id" + APP_STORE_ID; else apple.remove();

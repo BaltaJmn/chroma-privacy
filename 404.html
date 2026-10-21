@@ -40,7 +40,7 @@
   <h1 id="title"></h1>
   <p id="text"></p>
   <div class="stores" id="stores" hidden>
-    <a href="https://play.google.com/store/apps/details?id=com.baltajmn.color">Google Play</a>
+    <a id="play" href="https://play.google.com/store/apps/details?id=com.baltajmn.color">Google Play</a>
     <a id="appstore" href="#">App Store</a>
   </div>
 </main>
@@ -67,6 +67,12 @@
     document.getElementById("stores").hidden = false;
     var apple = document.getElementById("appstore");
     if (APP_STORE_ID) apple.href = "https://apps.apple.com/app/id" + APP_STORE_ID; else apple.remove();
+    // On a phone, only its own store: Play on Android, the App Store on iPhone and iPad (an iPad can
+    // say it is a Mac, but a Mac has no touch screen). Anywhere else, both.
+    var ua = navigator.userAgent;
+    var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (/Android/.test(ua)) apple.remove();
+    else if (ios) document.getElementById("play").remove();
   } else {
     document.getElementById("title").textContent = t[2];
     var home = document.createElement("a");

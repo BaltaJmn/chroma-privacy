@@ -9,7 +9,7 @@ by GitHub Pages from `main`, behind Cloudflare.
 | `index.html` | Privacy policy, English and Spanish. The URL in the app, Play and the App Store |
 | `terms.html` | Terms of use of Friends |
 | `delete.html` | How to delete the account, with or without the app (Play's deletion URL, also `/delete`) |
-| `404.html` | Any unknown path; for `/i/<code>`, the invitation for someone without the app |
+| `404.html` | Any unknown path; for `/i/<code>`, the invitation for someone without the app, with the store of their phone only (Google Play on Android, App Store on iPhone and iPad, both on a computer) |
 | `.well-known/` | `assetlinks.json` and `apple-app-site-association`: invitation links open the app |
 | `.nojekyll` | Without it Pages runs Jekyll, which drops `.well-known` and the links stop opening the app |
 

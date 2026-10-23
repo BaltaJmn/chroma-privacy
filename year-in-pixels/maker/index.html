@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Year in Pixels Maker: Color Your 2027 Online, Free</title>
+<meta name="description" content="Make your year in pixels online: name your colors, tap a day to paint it, export a PNG. Free, no sign-up, saved only in your browser.">
+<link rel="canonical" href="https://color.baltajmn.dev/year-in-pixels/maker/">
+<link rel="alternate" hreflang="en" href="https://color.baltajmn.dev/year-in-pixels/maker/">
+<link rel="alternate" hreflang="es" href="https://color.baltajmn.dev/es/ano-en-pixeles/crear/">
+<link rel="alternate" hreflang="pt" href="https://color.baltajmn.dev/pt/ano-em-pixels/criar/">
+<link rel="alternate" hreflang="x-default" href="https://color.baltajmn.dev/year-in-pixels/maker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Chroma">
+<meta property="og:title" content="Year in Pixels Maker: Color Your 2027 Online, Free">
+<meta property="og:description" content="Make your year in pixels online: name your colors, tap a day to paint it, export a PNG. Free, no sign-up, saved only in your browser.">
+<meta property="og:url" content="https://color.baltajmn.dev/year-in-pixels/maker/">
+<meta property="og:image" content="https://color.baltajmn.dev/yip/og/maker-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F1F1F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E0E" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/yip/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/yip/icon-180.png">
+<link rel="stylesheet" href="/yip/yip.css?v=8f3ed90f">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Year in Pixels maker","url":"https://color.baltajmn.dev/year-in-pixels/maker/","inLanguage":"en","applicationCategory":"LifestyleApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}},{"@type":"MobileApplication","name":"Chroma: Color Year in Pixels","operatingSystem":"Android, iOS","applicationCategory":"LifestyleApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"installUrl":"https://play.google.com/store/apps/details?id=com.baltajmn.color&referrer=utm_source%3Dcolor.baltajmn.dev%26utm_medium%3Dweb%26utm_campaign%3Dyip-ld-en","sameAs":["https://play.google.com/store/apps/details?id=com.baltajmn.color","https://apps.apple.com/app/id6819301462"]}]}</script>
+<script type="application/json" id="t">{"lang":"en","prev":"Previous year","next":"Next year","undo":"Undo","export":"Export PNG","clear":"Clear year","key":"Color key","add":"Add a color","eraser":"Eraser","placeholder":"What does it mean?","remove":"Remove","change":"Change color","days":["day","days"],"confirmRemove":"Remove \"{name}\"? Every day painted with that color will be cleared.","confirmClear":"Clear every day of {year}? Your color key stays.","hint":"Pick a color in the key, then tap a day. Tap it again to clear it.","help":"Keyboard: arrow keys move between days, Enter paints, 1 to 9 pick a color. Ctrl or Cmd + Z undoes.","saved":"Saved in this browser only. Clearing your browsing data erases it.","noStorage":"This browser isn't saving: export a PNG before you leave.","empty":"empty","grid":"Year grid, one column per month","defaults":["Great","Good","Okay","Low","Rough"],"untitled":"Untitled","sheetTitle":"Year in Pixels","file":"year-in-pixels"}</script>
+<script src="/yip/maker.js?v=44db2f91" defer></script>
+</head>
+<body>
+<header class="wrap top">
+<a class="brand" href="/year-in-pixels/"><img src="/yip/icon.svg" alt="" width="28" height="28">Chroma</a>
+<nav aria-label="Chroma">
+<a href="/year-in-pixels/">Printables</a>
+<a href="/year-in-pixels/maker/" aria-current="page">Online maker</a>
+<span class="langs"><a href="/year-in-pixels/maker/" hreflang="en" lang="en" aria-current="page"><span aria-hidden="true">EN</span><span class="sr">English</span></a><a href="/es/ano-en-pixeles/crear/" hreflang="es" lang="es"><span aria-hidden="true">ES</span><span class="sr">Español</span></a><a href="/pt/ano-em-pixels/criar/" hreflang="pt" lang="pt"><span aria-hidden="true">PT</span><span class="sr">Português</span></a></span>
+</nav>
+</header>
+<main>
+<section class="wrap tool" aria-labelledby="h1">
+<div class="tool-head">
+<div class="yearbar">
+<button class="icon-btn" id="prev" type="button" aria-label="Previous year"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+<output id="year" aria-live="polite">2027</output>
+<button class="icon-btn" id="next" type="button" aria-label="Next year"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+</div>
+<h1 id="h1">Year in Pixels maker</h1>
+<div class="actions">
+<button class="icon-btn" id="undo" type="button" aria-label="Undo" title="Undo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 4.5 11.5 9 16"/><path d="M5 11.5h9.5a5 5 0 0 1 0 10H11"/></svg></button>
+<button class="icon-btn" id="clear" type="button" aria-label="Clear year" title="Clear year"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15M10 11v6m4-6v6M6.5 7l.8 12a2 2 0 0 0 2 1.8h5.4a2 2 0 0 0 2-1.8l.8-12M9.5 7V4.5h5V7"/></svg></button>
+<button class="btn primary" id="export" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>Export PNG</button>
+</div>
+</div>
+<div class="work">
+<div class="card">
+<div class="yg" id="grid" role="group" aria-label="Year grid, one column per month" aria-describedby="help"></div>
+<p class="status" id="status">Pick a color in the key, then tap a day. Tap it again to clear it.</p>
+</div>
+<div class="card key">
+<h2 id="keyh">Color key</h2>
+<ol id="key" aria-labelledby="keyh"></ol>
+<button class="btn add" id="add" type="button">Add a color</button>
+<p class="help" id="help">Keyboard: arrow keys move between days, Enter paints, 1 to 9 pick a color. Ctrl or Cmd + Z undoes.</p>
+<p class="help" id="saved">Saved in this browser only. Clearing your browsing data erases it.</p>
+</div>
+</div>
+<div class="strip" id="strip" aria-hidden="true"></div>
+<p class="sr" id="live" aria-live="polite"></p>
+<noscript><p>JavaScript is needed for the maker. <a href="/year-in-pixels/">Prefer paper? Print the 2027 templates</a></p></noscript>
+</section>
+
+<section class="band"><div class="wrap">
+<h2>How the maker works</h2>
+<ol class="steps" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"><li><h3>Your key is your brush</h3><p>Each color in the key has a meaning. Choose one, then tap days to paint them; tap a day again to clear it. Change a color and every day with it changes too.</p></li><li><h3>It stays in this browser</h3><p>Nothing is uploaded and there's no account. Your year is saved on this device, in this browser, until you clear the year or your browsing data.</p></li><li><h3>Export it as an image</h3><p>Export PNG draws your year and your key on white, ready to share or print.</p></li></ol>
+<p style="margin-top:32px"><a href="/year-in-pixels/">Prefer paper? Print the 2027 templates</a></p>
+</div></section>
+
+<section class="band"><div class="wrap split">
+<div>
+<h2>Tired of remembering?</h2>
+<p>In Chroma, you take a photo a day, pick one of its colors, and your year fills in on your phone.</p>
+<div class="stores">
+<a class="btn" data-store="play" href="https://play.google.com/store/apps/details?id=com.baltajmn.color&amp;referrer=utm_source%3Dcolor.baltajmn.dev%26utm_medium%3Dweb%26utm_campaign%3Dyip-maker-en">Google Play <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+<a class="btn" data-store="apple" href="https://apps.apple.com/app/apple-store/id6819301462?ct=yip-maker-en&amp;mt=8">App Store <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+</div>
+</div>
+<img class="phone" src="/yip/img/app-en.webp" alt="Chroma on iPhone: a sunset photo and the peach color picked from it" width="720" height="1321" loading="lazy">
+</div></section>
+</main>
+<footer><div class="wrap"><span>Chroma: Color Year in Pixels, by Baltasar Jiménez.</span><nav aria-label="Privacy">
+<a href="/year-in-pixels/">Printables</a><a href="/year-in-pixels/maker/">Online maker</a><a href="/">Privacy</a></nav></div></footer>
+<script>(function(){var q=new URLSearchParams(location.search),c=function(v){return(v||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40)},s=c(q.get("utm_source"));if(!s)return;var m=c(q.get("utm_medium"))||"referral",n=c(q.get("utm_campaign"))||"none";
+document.querySelectorAll('[data-store="play"]').forEach(function(e){var x=new URL(e.href);x.searchParams.set("referrer","utm_source="+s+"&utm_medium="+m+"&utm_campaign="+n);e.href=x});
+document.querySelectorAll('[data-store="apple"]').forEach(function(e){var x=new URL(e.href);x.searchParams.set("ct",(s+"-"+n).slice(0,40));e.href=x})})()</script>
+<script>(function(){var u=navigator.userAgent||"",a=/Android/i.test(u),i=/iPhone|iPad|iPod/i.test(u)||(/Macintosh/i.test(u)&&navigator.maxTouchPoints>1);document.querySelectorAll("[data-store]").forEach(function(e){if((a&&e.dataset.store==="apple")||(i&&e.dataset.store==="play"))e.hidden=true})})()</script>
+</body>
+</html>

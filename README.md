@@ -35,7 +35,7 @@ the three with search volume (Google autocomplete, 23-10-2026); de and fr were l
   they are vector with Roboto embedded. Commit the generated files with the change.
 - **Next year:** change `YEAR` in `tools/sheets.mjs` and run the line above. The months layout starts
   the week on Monday for A4 in en and es, and on Sunday for Letter and for pt (Brazil).
-- **Stable URLs** for other channels (Pinterest): `https://color.baltajmn.dev/yip/sheets/<lang>-<layout>.png`
+- **Stable URLs** for other channels (social posts, newsletters): `https://color.baltajmn.dev/yip/sheets/<lang>-<layout>.png`
   (1240 x 1754, `layout` = `classic`, `months`, `key`), the same as `.svg` per paper
   (`<lang>-<layout>-<a4|letter>.svg`), the PDFs in `/yip/pdf/`, and the OG cards in `/yip/og/`.
 - **The maker** keeps everything in `localStorage` (`chroma-yip-v1`); nothing is uploaded. Days are

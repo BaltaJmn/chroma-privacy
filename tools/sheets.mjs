@@ -233,7 +233,7 @@ function generate() {
         chrome(['--no-pdf-header-footer', `--print-to-pdf=${pdf}`, `file://${html}`])
         sizes[pdfName(lang, layout, paper)] = statSync(pdf).size
         if (paper === 'a4') {
-          // 1240 x 1754 px: A4 at 150 dpi, for Pinterest and the OG cards.
+          // 1240 x 1754 px: A4 at 150 dpi, for sharing and the OG cards.
           chrome([`--window-size=1240,1754`, `--screenshot=${join(OUT, 'sheets', `${lang}-${layout}.png`)}`, `file://${html}`])
         }
       }

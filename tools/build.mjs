@@ -353,7 +353,7 @@ function stores(campaign) {
 // Each phone sees only its own store, like the invitation page; a computer sees both.
 const STORE_JS = `<script>(function(){var u=navigator.userAgent||"",a=/Android/i.test(u),i=/iPhone|iPad|iPod/i.test(u)||(/Macintosh/i.test(u)&&navigator.maxTouchPoints>1);document.querySelectorAll("[data-store]").forEach(function(e){if((a&&e.dataset.store==="apple")||(i&&e.dataset.store==="play"))e.hidden=true})})()</script>`
 
-// A visitor who arrives with utm_* (a Pinterest pin, a newsletter) takes that origin to the store instead of
+// A visitor who arrives with utm_* (a social post, a newsletter) takes that origin to the store instead of
 // the page's own web campaign, so the consoles tell the channels apart. Values are cut to [a-z0-9_-], 40 chars.
 const UTM_JS = `<script>(function(){var q=new URLSearchParams(location.search),c=function(v){return(v||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40)},s=c(q.get("utm_source"));if(!s)return;var m=c(q.get("utm_medium"))||"referral",n=c(q.get("utm_campaign"))||"none";
 document.querySelectorAll('[data-store="play"]').forEach(function(e){var x=new URL(e.href);x.searchParams.set("referrer","utm_source="+s+"&utm_medium="+m+"&utm_campaign="+n);e.href=x});

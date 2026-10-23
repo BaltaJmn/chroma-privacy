@@ -42,8 +42,8 @@ the three with search volume (Google autocomplete, 23-10-2026); de and fr were l
   stored by color key row, so changing a row's color repaints its days.
 - **Store links** carry a campaign so web installs show in the consoles, since the app has no
   analytics: Play `referrer=utm_source=color.baltajmn.dev&utm_medium=web&utm_campaign=yip-<page>-<lang>`
-  and App Store `ct=yip-<page>-<lang>`. The App Store counts `ct` only with the provider token `pt`:
-  set `APPLE_PT` in `tools/build.mjs` and rebuild. Android sees only Play, iPhone only the App Store.
+  and App Store `ct=yip-<page>-<lang>`. The App Store counts `ct` only with the provider token
+  `pt` (`APPLE_PT` in `tools/build.mjs`, 129564006; App Analytics, Campaigns, "Generate a campaign link"). Android sees only Play, iPhone only the App Store.
 - **No cookies, no analytics scripts**, the same contract as the app.
 - CSS and JS URLs carry `?v=<hash>` so a change reaches visitors past the Cloudflare cache.
 

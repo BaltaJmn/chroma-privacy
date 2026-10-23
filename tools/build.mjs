@@ -19,7 +19,7 @@ const v = (p) => `${p}?v=${createHash('md5').update(readFileSync(join(ROOT, p)))
 // Campaign tokens: the apps have no analytics, so the stores are the only place a web install shows up.
 // App Store: `pt` is the provider token from App Store Connect > App Analytics > Campaigns. Without it
 // Apple ignores `ct`, so it is left out until the token is known.
-const APPLE_PT = ''
+const APPLE_PT = '129564006' // provider ID of the developer account, as App Store Connect puts it in its campaign links
 const play = (c) => `https://play.google.com/store/apps/details?id=com.baltajmn.color&referrer=${encodeURIComponent(`utm_source=color.baltajmn.dev&utm_medium=web&utm_campaign=${c}`)}`
 const apple = (c) => `https://apps.apple.com/app/apple-store/id6819301462?${APPLE_PT ? `pt=${APPLE_PT}&` : ''}ct=${c}&mt=8`
 

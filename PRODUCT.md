@@ -48,6 +48,11 @@ have to remember.
   and 30 on the left, days that do not exist left empty.
 - Languages of the web tools: en, es, pt (search data of 23-10-2026). The app has 13.
 
+- Facts the comparison pages state about Chroma, checked in the app repository on 26-10-2026: Friends is
+  free and optional (`SPEC.md`, principle 5: social is never charged); shared photos are deleted after
+  2 days (`supabase/functions/purge-photos`); a photo is re-encoded on capture, so its EXIF and GPS
+  never reach storage (`shared/.../data/Capture.kt`).
+
 ## Brand Commitments
 
 - Name under the icon: Chroma. Store title: "Chroma: Color Year in Pixels" in every language.

@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { YEAR, PAPER, LAYOUTS, mondayFirst, pdfName } from './sheets.mjs'
+import { COMPARE, CHECKED, MOOD_WEEK, SLEEP_WEEK, PHOTO7 } from './compare.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://color.baltajmn.dev'
@@ -122,7 +123,7 @@ const T = {
       sheetTitle: 'Year in Pixels',
       file: 'year-in-pixels',
     },
-    nav: { print: 'Printables', maker: 'Online maker', privacy: 'Privacy' },
+    nav: { print: 'Printables', maker: 'Online maker', compare: 'Apps compared', privacy: 'Privacy' },
     footer: 'Chroma: Color Year in Pixels, by Baltasar Jiménez.',
   },
   es: {
@@ -204,7 +205,7 @@ const T = {
       sheetTitle: 'Año en píxeles',
       file: 'ano-en-pixeles',
     },
-    nav: { print: 'Plantillas', maker: 'Creador online', privacy: 'Privacidad' },
+    nav: { print: 'Plantillas', maker: 'Creador online', compare: 'Apps comparadas', privacy: 'Privacidad' },
     footer: 'Chroma: Color Year in Pixels, de Baltasar Jiménez.',
   },
   pt: {
@@ -286,7 +287,7 @@ const T = {
       sheetTitle: 'Ano em pixels',
       file: 'ano-em-pixels',
     },
-    nav: { print: 'Modelos', maker: 'Criador online', privacy: 'Privacidade' },
+    nav: { print: 'Modelos', maker: 'Criador online', compare: 'Apps comparados', privacy: 'Privacidade' },
     footer: 'Chroma: Color Year in Pixels, de Baltasar Jiménez.',
   },
 }
@@ -298,9 +299,9 @@ const ICON = {
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>',
 }
 
-function head(lang, kind, t) {
-  const url = SITE + PAGES[kind][lang]
-  const alts = Object.keys(PAGES[kind]).map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE + PAGES[kind][l]}">`).join('\n')
+function head(lang, kind, t, paths = PAGES[kind]) {
+  const url = SITE + paths[lang]
+  const alts = Object.keys(paths).map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE + paths[l]}">`).join('\n')
   const og = `${SITE}/yip/og/${kind}-${lang}.png`
   return `<!doctype html>
 <html lang="${lang}">
@@ -311,7 +312,7 @@ function head(lang, kind, t) {
 <meta name="description" content="${esc(t.desc)}">
 <link rel="canonical" href="${url}">
 ${alts}
-<link rel="alternate" hreflang="x-default" href="${SITE + PAGES[kind].en}">
+<link rel="alternate" hreflang="x-default" href="${SITE + paths.en}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Chroma">
 <meta property="og:title" content="${esc(t.title)}">
@@ -329,17 +330,18 @@ ${alts}
 <link rel="stylesheet" href="${v('/yip/yip.css')}">`
 }
 
-function header(lang, kind) {
+function header(lang, kind, paths = PAGES[kind]) {
   const t = T[lang]
-  const langs = Object.keys(PAGES[kind]).map((l) =>
-    `<a href="${PAGES[kind][l]}" hreflang="${l}" lang="${l}"${l === lang ? ' aria-current="page"' : ''}><span aria-hidden="true">${l.toUpperCase()}</span><span class="sr">${LANG_NAME[l]}</span></a>`).join('')
+  const langs = Object.keys(paths).map((l) =>
+    `<a href="${paths[l]}" hreflang="${l}" lang="${l}"${l === lang ? ' aria-current="page"' : ''}><span aria-hidden="true">${l.toUpperCase()}</span><span class="sr">${LANG_NAME[l]}</span></a>`).join('')
   return `<header class="wrap top">
 <a class="brand" href="${PAGES.print[lang]}"><img src="/yip/icon.svg" alt="" width="28" height="28">Chroma</a>
 <nav aria-label="Chroma">
 <a href="${PAGES.print[lang]}"${kind === 'print' ? ' aria-current="page"' : ''}>${t.nav.print}</a>
 <a href="${PAGES.maker[lang]}"${kind === 'maker' ? ' aria-current="page"' : ''}>${t.nav.maker}</a>
-<span class="langs">${langs}</span>
+<a href="${COMPARE.yip.path[lang]}"${kind.startsWith('vs-') ? ' aria-current="page"' : ''}>${t.nav.compare}</a>
 </nav>
+<span class="langs">${langs}</span>
 </header>`
 }
 
@@ -363,7 +365,7 @@ document.querySelectorAll('[data-store="apple"]').forEach(function(e){var x=new 
 function footer(lang) {
   const t = T[lang]
   return `<footer><div class="wrap"><span>${esc(t.footer)}</span><nav aria-label="${esc(t.nav.privacy)}">
-<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="/">${t.nav.privacy}</a></nav></div></footer>`
+<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="${COMPARE.yip.path[lang]}">${t.nav.compare}</a><a href="/">${t.nav.privacy}</a></nav></div></footer>`
 }
 
 const appJson = (lang) => ({
@@ -580,6 +582,168 @@ ${STORE_JS}
 `
 }
 
+// --- Comparison pages (texts and sources in compare.mjs) ------------------------------------------
+const CMP = {
+  en: {
+    checked: (d) => `Checked on ${d}`,
+    fitUs: 'Chroma fits if', fitThem: (n) => `${n} fits if`,
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    sourcesH: 'How this was checked',
+    sourcesP: (d) => `Everything said here about other apps comes from their own store pages, websites and privacy policies, read on ${d}. Prices change by country and over time; the store shows the current one.`,
+    tm: (n) => `${n} ${n.includes(' and ') ? 'are trademarks' : 'is a trademark'} of ${n.includes(' and ') ? 'their owners' : 'its owner'}. Chroma is not affiliated with ${n.includes(' and ') ? 'them' : 'it'}.`,
+    fix: (m) => `Spotted something out of date? Write to <a href="mailto:${m}">${m}</a> and it gets fixed.`,
+    appH: 'Try Chroma for a week',
+    appP: 'Take one photo a day for seven days and look at the row of colors it leaves. If it is not for you, nothing was uploaded and there is nothing to cancel.',
+    more: 'More comparisons', paper: `Prefer paper? The free ${YEAR} year in pixels printables`,
+    and: ' and ', film: '1 s',
+  },
+  es: {
+    checked: (d) => `Comprobado el ${d}`,
+    fitUs: 'Chroma te encaja si', fitThem: (n) => `${n} te encaja si`,
+    days: ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'],
+    sourcesH: 'Cómo se ha comprobado',
+    sourcesP: (d) => `Todo lo que se dice aquí de otras apps sale de sus fichas en las tiendas, sus webs y sus políticas de privacidad, leídas el ${d}. Los precios cambian según el país y con el tiempo; la tienda enseña el actual.`,
+    tm: (n) => `${n} ${n.includes(' y ') ? 'son marcas de sus dueños' : 'es una marca de su dueño'}. Chroma no tiene relación con ${n.includes(' y ') ? 'ellas' : 'ella'}.`,
+    fix: (m) => `¿Ves algo desactualizado? Escribe a <a href="mailto:${m}">${m}</a> y se corrige.`,
+    appH: 'Prueba Chroma una semana',
+    appP: 'Haz una foto al día durante siete días y mira la fila de colores que te queda. Si no es para ti, no se subió nada y no hay nada que cancelar.',
+    more: 'Más comparativas', paper: `¿Prefieres papel? Las plantillas gratis del año en píxeles ${YEAR}`,
+    and: ' y ', film: '1 s',
+  },
+  pt: {
+    checked: (d) => `Verificado em ${d}`,
+    fitUs: 'O Chroma combina com você se', fitThem: (n) => `${n} combina com você se`,
+    days: ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'],
+    sourcesH: 'Como isto foi verificado',
+    sourcesP: (d) => `Tudo o que se diz aqui sobre outros apps vem das fichas nas lojas, dos sites e das políticas de privacidade deles, lidos em ${d}. Os preços mudam por país e com o tempo; a loja mostra o atual.`,
+    tm: (n) => `${n} ${n.includes(' e ') ? 'são marcas dos seus donos' : 'é uma marca do seu dono'}. O Chroma não tem relação com ${n.includes(' e ') ? 'eles' : 'ele'}.`,
+    fix: (m) => `Viu algo desatualizado? Escreva para <a href="mailto:${m}">${m}</a> e a gente corrige.`,
+    appH: 'Experimente o Chroma por uma semana',
+    appP: 'Tire uma foto por dia durante sete dias e veja a fileira de cores que fica. Se não for para você, nada foi enviado e não há nada para cancelar.',
+    more: 'Mais comparações', paper: `Prefere papel? Os modelos grátis do ano em pixels ${YEAR}`,
+    and: ' e ', film: '1 s',
+  },
+}
+const CONTACT = 'baltajmn@gmail.com'
+const LOCALE_DATE = { en: 'en-US', es: 'es-ES', pt: 'pt-BR' }
+const fmtDate = (lang) => new Intl.DateTimeFormat(LOCALE_DATE[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(CHECKED + 'T12:00:00Z'))
+const MARK = {
+  yes: '<svg class="mk" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>',
+  no: '<svg class="mk no" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5.5 10h9"/></svg>',
+}
+const cell = (c) => c.startsWith('+ ') ? `${MARK.yes}<span>${esc(c.slice(2))}</span>` : c.startsWith('- ') ? `${MARK.no}<span>${esc(c.slice(2))}</span>` : `<span>${esc(c)}</span>`
+
+// The week strips: an example week drawn the way each app colors a day.
+function week(id, lang) {
+  const t = COMPARE[id][lang]
+  const c = CMP[lang]
+  const moods = T[lang].print.keyDemo.map(([label]) => label)
+  const sleep = T[lang].print.ideas.find(([k]) => k === 'sleep')[3]
+  const sq = (color, label, extra = '') => `<li${extra}><i style="background:${color}"></i><span>${esc(label)}</span></li>`
+  const rows = {
+    mood: () => MOOD_WEEK.map((i) => sq(IDEA_COLORS.mood[i], moods[i])),
+    scale: () => MOOD_WEEK.map((i) => sq(IDEA_COLORS.mood[i], String(5 - i))),
+    sleep: () => SLEEP_WEEK.map((i) => sq(IDEA_COLORS.sleep[i], sleep[i])),
+    photo: () => PHOTO7.map(([color, name]) => sq(color, name[lang])),
+    film: () => PHOTO7.map(() => `<li class="film"><i></i><span>${c.film}</span></li>`),
+  }
+  const kinds = { mood: ['mood', 'photo'], three: ['scale', 'sleep', 'photo'], film: ['film', 'photo'] }[COMPARE[id].strip]
+  return `<figure class="week card">
+<h2>${esc(t.stripH)}</h2>
+<ol class="wd" aria-hidden="true">${c.days.map((d) => `<li>${d}</li>`).join('')}</ol>
+${kinds.map((k, i) => `<div class="wrow${k === 'photo' ? ' ours' : ''}"><p>${esc(t.stripRows[i])}</p><ol>${rows[k]().join('')}</ol>${k === 'photo' ? `<p class="names" aria-hidden="true">${esc(PHOTO7.map(([, n]) => n[lang]).join(', '))}</p>` : ''}</div>`).join('\n')}
+<figcaption class="note">${esc(t.stripNote)}</figcaption>
+</figure>`
+}
+
+function comparePage(id, lang) {
+  const P = COMPARE[id]
+  const t = P[lang]
+  const c = CMP[lang]
+  const kind = `vs-${id}`
+  const date = fmtDate(lang)
+  const names = P.others.join(c.and)
+  const cols = ['Chroma', ...P.others]
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      appJson(lang),
+      { '@type': 'WebPage', name: t.title, url: SITE + P.path[lang], inLanguage: lang, dateModified: CHECKED, about: appJson(lang).name },
+    ],
+  }
+  const fit = t.fits
+    ? `<div class="fit three">${t.fits.map(([n, p]) => `<div class="card${n === 'Chroma' ? ' ours' : ''}"><h2>${esc(n)}</h2><p>${esc(p)}</p></div>`).join('')}</div>`
+    : `<div class="fit"><div class="card ours"><h2>${esc(c.fitUs)}</h2><ul>${t.fitUs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="card"><h2>${esc(c.fitThem(P.others[0]))}</h2><ul>${t.fitThem.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`
+  const table = `<div class="vs-wrap card"><table class="vs"><thead><tr><td></td>${cols.map((n, i) => `<th scope="col"${i === 0 ? ' class="ours"' : ''}>${i === 0 ? '<img src="/yip/icon.svg" alt="" width="20" height="20">' : ''}${esc(n)}</th>`).join('')}</tr></thead>
+<tbody>
+${t.rows.map(([what, ...cells]) => `<tr><th scope="row">${esc(what)}</th>${cells.map((x, i) => `<td data-app="${esc(cols[i])}"${i === 0 ? ' class="ours"' : ''}>${cell(x)}</td>`).join('')}</tr>`).join('\n')}
+</tbody></table></div>`
+  const others = Object.keys(COMPARE).filter((k) => k !== id && COMPARE[k].path[lang])
+  return `${head(lang, kind, t, P.path)}
+<script type="application/ld+json">${JSON.stringify(ld)}</script>
+</head>
+<body>
+${header(lang, kind, P.path)}
+<main>
+<section class="wrap cmp-hero">
+<div class="cmp-copy">
+<h1>${esc(t.h1)}</h1>
+<p class="lede">${esc(t.lede)}</p>
+${stores(`yip-${kind}-${lang}`)}
+<p class="note checked"><a href="#sources">${esc(c.checked(date))}</a></p>
+</div>
+${week(id, lang)}
+</section>
+
+<section class="band"><div class="wrap">
+${fit}
+</div></section>
+
+<section class="band" id="table"><div class="wrap">
+<h2>${esc(t.tableH)}</h2>
+${table}
+</div></section>
+${t.better ? `
+<section class="band"><div class="wrap">
+<h2>${esc(t.betterH)}</h2>
+<ul class="better">${t.better.map(([h, p]) => `<li><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join('')}</ul>
+</div></section>` : `
+<section class="band"><div class="wrap">
+<h2>${esc(t.sameH)}</h2>
+<p>${esc(t.same)}</p>
+</div></section>`}
+
+<section class="band"><div class="wrap faq">
+<h2>${esc(t.faqH)}</h2>
+${t.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+</div></section>
+
+<section class="band"><div class="wrap split">
+<div>
+<h2>${esc(c.appH)}</h2>
+<p>${esc(c.appP)}</p>
+${stores(`yip-${kind}-${lang}`)}
+</div>
+<img class="phone" src="/yip/img/app-${lang}.webp" alt="${esc(T[lang].print.appAlt)}" width="720" height="1321" loading="lazy">
+</div></section>
+
+<section class="band" id="sources"><div class="wrap sources">
+<h2>${esc(c.sourcesH)}</h2>
+<p>${esc(c.sourcesP(date))}</p>
+<ul>${t.sources.map(([label, href]) => `<li><a href="${esc(href)}" rel="nofollow noopener">${esc(label)}</a></li>`).join('')}</ul>
+<p class="note">${esc(c.tm(names))} ${c.fix(CONTACT)}</p>
+<h3>${esc(c.more)}</h3>
+<ul class="more">${others.map((k) => `<li><a href="${COMPARE[k].path[lang]}">${esc(COMPARE[k][lang].h1)}</a></li>`).join('')}<li><a href="${PAGES.print[lang]}">${esc(c.paper)}</a></li></ul>
+</div></section>
+</main>
+${footer(lang)}
+${UTM_JS}
+${STORE_JS}
+</body>
+</html>
+`
+}
+
 for (const lang of Object.keys(T)) {
   for (const [kind, fn] of [['print', printPage], ['maker', makerPage]]) {
     const dir = join(ROOT, PAGES[kind][lang])
@@ -588,13 +752,21 @@ for (const lang of Object.keys(T)) {
   }
 }
 
+for (const id of Object.keys(COMPARE)) {
+  for (const lang of Object.keys(COMPARE[id].path)) {
+    const dir = join(ROOT, COMPARE[id].path[lang])
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(join(dir, 'index.html'), comparePage(id, lang))
+  }
+}
+
 // sitemap.xml with the language alternates of each page, and the policy pages as they are.
 const urls = []
-for (const kind of Object.keys(PAGES)) {
-  for (const lang of Object.keys(PAGES[kind])) {
-    const alts = Object.keys(PAGES[kind]).map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${SITE + PAGES[kind][l]}"/>`).join('') +
-      `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE + PAGES[kind].en}"/>`
-    urls.push(`<url><loc>${SITE + PAGES[kind][lang]}</loc><lastmod>${TODAY}</lastmod>${alts}</url>`)
+for (const paths of [...Object.values(PAGES), ...Object.values(COMPARE).map((c) => c.path)]) {
+  for (const lang of Object.keys(paths)) {
+    const alts = Object.keys(paths).map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${SITE + paths[l]}"/>`).join('') +
+      `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE + paths.en}"/>`
+    urls.push(`<url><loc>${SITE + paths[lang]}</loc><lastmod>${TODAY}</lastmod>${alts}</url>`)
   }
 }
 for (const p of ['/', '/terms.html', '/delete.html']) urls.push(`<url><loc>${SITE + p}</loc></url>`)

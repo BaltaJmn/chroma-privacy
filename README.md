@@ -14,6 +14,7 @@ by GitHub Pages from `main`, behind Cloudflare.
 | `.nojekyll` | Without it Pages runs Jekyll, which drops `.well-known` and the links stop opening the app |
 | `year-in-pixels/`, `es/ano-en-pixeles/`, `pt/ano-em-pixels/` | Year in Pixels 2027 printables: three layouts, A4 and Letter, previewed with notes on the sheet |
 | `year-in-pixels/maker/`, `es/ano-en-pixeles/crear/`, `pt/ano-em-pixels/criar/` | Online maker: a color key you paint with, saved in the browser, PNG export |
+| `daylio-alternative/`, `1-second-everyday-alternative/`, `year-in-pixels/apps/` and their `es/` (and `pt/` for the apps roundup) pages | Comparisons with Daylio, 1 Second Everyday, and Pixels and Pixa, with sources and the date they were checked |
 | `yip/` | Shared CSS and `maker.js`, the sheets (`sheets/*.svg` for the web, `*.png` A4 at 150 dpi), the PDFs (`pdf/`), app screenshots, OG cards, icon |
 | `sitemap.xml`, `robots.txt` | For Google; the sitemap lists the pages with their language alternates |
 | `tools/` | `sheets.mjs` draws the sheets and PDFs, `build.mjs` the pages, sitemap and robots, `og.mjs` the OG cards, `check.mjs` checks them. `fonts/Roboto.ttf` (OFL) is the font of the PDFs |
@@ -44,6 +45,11 @@ the three with search volume (Google autocomplete, 23-10-2026); de and fr were l
   analytics: Play `referrer=utm_source=color.baltajmn.dev&utm_medium=web&utm_campaign=yip-<page>-<lang>`
   and App Store `ct=yip-<page>-<lang>`. The App Store counts `ct` only with the provider token
   `pt` (`APPLE_PT` in `tools/build.mjs`, 129564006; App Analytics, Campaigns, "Generate a campaign link"). Android sees only Play, iPhone only the App Store.
+- **Comparison pages (from 26-10-2026):** texts and sources in `tools/compare.mjs`, drawn by
+  `comparePage()` in `tools/build.mjs`. Every fact about another app comes from its store pages, site
+  or privacy policy on `CHECKED`, listed on each page; before changing a line about another app, check
+  it again and move `CHECKED`. Each page says where the other app is the better pick and that Chroma is
+  not affiliated with it. Campaigns: `yip-vs-<id>-<lang>`.
 - **No cookies, no analytics scripts**, the same contract as the app.
 - CSS and JS URLs carry `?v=<hash>` so a change reaches visitors past the Cloudflare cache.
 

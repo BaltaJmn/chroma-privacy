@@ -27,7 +27,8 @@ people actually use.
 ## Positioning
 
 Chroma is a year in pixels that fills itself from a photo: one photo a day, the app proposes its colors,
-you pick one, and the year becomes a 12 x 31 grid. No mood list to choose from, no streaks, no ads.
+you pick one, and the year becomes a 12 x 31 grid. No mood list to choose from, no streaks; free with one
+small banner ad that Pro removes.
 The web tools are the paper and manual version of the same grid; the app is the version you do not
 have to remember.
 
@@ -37,13 +38,15 @@ have to remember.
 - The online maker is used on a phone or a computer, often in several short visits over the year: the
   grid lives in the browser (`localStorage`), with no account and no server.
 - Store links carry a campaign token (`ct=` on the App Store, `referrer=utm_...` on Play) because the
-  apps have no analytics by contract; the stores are the only measure.
+  apps have no analytics of their own by contract; the stores are the only measure.
 
 ## Capabilities and Constraints
 
 - Static files on GitHub Pages behind Cloudflare. No server code, no cookies, no third party scripts.
-- The app: Android and iOS, `com.baltajmn.color`, App Store id 6819301462. Free; Pro is a one-time
-  1,99 EUR or 0,99 EUR a month (never needed for the grid).
+- The app: Android and iOS, `com.baltajmn.color`, App Store id 6819301462. Free with one banner ad
+  (Google AdMob, no full-screen ads, rated for all ages; people who used the app before ads were added
+  never see it, new installs see it from the third day); Pro removes it. Pro is a one-time 4,99 EUR or
+  2,49 EUR a month (never needed for the grid).
 - The app grid: one column per month, one row per day (12 x 31), month initials on top, days 1, 10, 20
   and 30 on the left, days that do not exist left empty.
 - Languages of the web tools: en, es, pt (search data of 23-10-2026). The app has 13.

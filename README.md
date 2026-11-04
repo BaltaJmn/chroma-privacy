@@ -7,8 +7,10 @@ by GitHub Pages from `main`, behind Cloudflare.
 | File | What it is |
 |---|---|
 | `index.html` | Privacy policy, English and Spanish. The URL in the app, Play and the App Store |
-| `terms.html` | Terms of use of Friends |
+| `terms.html` | Terms of use of Friends and Pro |
 | `delete.html` | How to delete the account, with or without the app (Play's deletion URL, also `/delete`) |
+| `legal.html` | Legal notice (LSSI art. 10), English and Spanish, linked from every page's footer (the pt pages link to its Spanish half). One email for the whole site (baltajmn@gmail.com), the same owner details as the FlowTime site |
+| `app-ads.txt` | The AdMob publisher line (`google.com, pub-1605179202100483, DIRECT, f08c47fec0942fa0`, the same as FlowTime), for the app's free version, which shows a banner ad. Served as plain text from the root by Pages; `robots.txt` does not hide it |
 | `404.html` | Any unknown path; for `/i/<code>`, the invitation for someone without the app, with the store of their phone only (Google Play on Android, App Store on iPhone and iPad, both on a computer) |
 | `.well-known/` | `assetlinks.json` and `apple-app-site-association`: invitation links open the app |
 | `.nojekyll` | Without it Pages runs Jekyll, which drops `.well-known` and the links stop opening the app |
@@ -42,7 +44,7 @@ the three with search volume (Google autocomplete, 23-10-2026); de and fr were l
 - **The maker** keeps everything in `localStorage` (`chroma-yip-v1`); nothing is uploaded. Days are
   stored by color key row, so changing a row's color repaints its days.
 - **Store links** carry a campaign so web installs show in the consoles, since the app has no
-  analytics: Play `referrer=utm_source=color.baltajmn.dev&utm_medium=web&utm_campaign=yip-<page>-<lang>`
+  analytics of its own: Play `referrer=utm_source=color.baltajmn.dev&utm_medium=web&utm_campaign=yip-<page>-<lang>`
   and App Store `ct=yip-<page>-<lang>`. The App Store counts `ct` only with the provider token
   `pt` (`APPLE_PT` in `tools/build.mjs`, 129564006; App Analytics, Campaigns, "Generate a campaign link"). Android sees only Play, iPhone only the App Store.
 - **Comparison pages (from 26-10-2026):** texts and sources in `tools/compare.mjs`, drawn by
@@ -50,13 +52,16 @@ the three with search volume (Google autocomplete, 23-10-2026); de and fr were l
   or privacy policy on `CHECKED`, listed on each page; before changing a line about another app, check
   it again and move `CHECKED`. Each page says where the other app is the better pick and that Chroma is
   not affiliated with it. Campaigns: `yip-vs-<id>-<lang>`.
-- **No cookies, no analytics scripts**, the same contract as the app.
+- **No cookies, no analytics scripts** on the web pages. The app's free version does show one banner ad
+  (Google AdMob) that Pro removes; the policy, the terms and `app-ads.txt` say so, and the comparison
+  pages must not claim "no ads" for Chroma.
 - CSS and JS URLs carry `?v=<hash>` so a change reaches visitors past the Cloudflare cache.
 
 ## Keeping it true
 
 The policy is written against what the app and its server actually do, not from a template. A change
-to what leaves the phone or what the server keeps changes, in the same change, this site, the app's
+to what leaves the phone, to the ads (what the ads software collects, when the banner shows, the consent
+and tracking prompts) or to what the server keeps changes, in the same change, this site, the app's
 `store/formularios.md` and `PrivacyInfo.xcprivacy`, and the Data Safety form in Play Console.
 
 This is the only copy: edit it here. Nothing private is published: no source, no keys, no user data.

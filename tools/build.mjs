@@ -17,7 +17,7 @@ const TODAY = new Date().toISOString().slice(0, 10)
 // Cloudflare and browsers keep CSS and JS for a while: the URL changes when the file does.
 const v = (p) => `${p}?v=${createHash('md5').update(readFileSync(join(ROOT, p))).digest('hex').slice(0, 8)}`
 
-// Campaign tokens: the apps have no analytics, so the stores are the only place a web install shows up.
+// Campaign tokens: the apps have no analytics of their own, so the stores are the only place a web install shows up.
 // App Store: `pt` is the provider token from App Store Connect > App Analytics > Campaigns. Without it
 // Apple ignores `ct`, so it is left out until the token is known.
 const APPLE_PT = '129564006' // provider ID of the developer account, as App Store Connect puts it in its campaign links
@@ -69,7 +69,7 @@ const T = {
       keyDemoNote: 'Example key',
       appH: 'Or pick the color from a photo',
       appP1: 'Chroma is a year in pixels for your phone. Take one photo a day; Chroma finds its colors, you pick one, and it lands on your grid with a name.',
-      appP2: `By December 31, your ${YEAR} can be 365 colors you actually saw. No list of moods to pick from, no ads, and your photos stay on your phone.`,
+      appP2: `By December 31, your ${YEAR} can be 365 colors you actually saw. No list of moods to pick from, your photos stay on your phone, and the free version has just one small banner ad that Pro removes.`,
       appAlt: 'Chroma on iPhone: a sunset photo and the peach color picked from it',
       ideasH: 'Year in pixels ideas: what each color can mean',
       ideasP: 'Pick one thing to track and give it 4 to 6 colors. Fewer colors make the patterns easier to see.',
@@ -123,7 +123,7 @@ const T = {
       sheetTitle: 'Year in Pixels',
       file: 'year-in-pixels',
     },
-    nav: { print: 'Printables', maker: 'Online maker', compare: 'Apps compared', privacy: 'Privacy' },
+    nav: { print: 'Printables', maker: 'Online maker', compare: 'Apps compared', privacy: 'Privacy', legal: 'Legal notice' },
     footer: 'Chroma: Color Year in Pixels, by Baltasar Jiménez.',
   },
   es: {
@@ -151,7 +151,7 @@ const T = {
       keyDemoNote: 'Leyenda de ejemplo',
       appH: 'O elige el color a partir de una foto',
       appP1: 'Chroma es un año en píxeles para el móvil. Haz una foto al día: Chroma extrae sus colores, tú eliges uno y queda en tu rejilla con su nombre.',
-      appP2: `El 31 de diciembre, tu ${YEAR} puede ser 365 colores que viste de verdad. Sin lista de estados de ánimo, sin anuncios, y tus fotos no salen del móvil.`,
+      appP2: `El 31 de diciembre, tu ${YEAR} puede ser 365 colores que viste de verdad. Sin lista de estados de ánimo, tus fotos no salen del móvil y la versión gratis solo lleva un banner pequeño que Pro quita.`,
       appAlt: 'Chroma en el iPhone: una foto de un atardecer y el color melocotón sacado de ella',
       ideasH: 'Ideas para tu año en píxeles: qué puede significar cada color',
       ideasP: 'Elige una sola cosa y dale de 4 a 6 colores. Con menos colores se ven mejor los patrones.',
@@ -205,7 +205,7 @@ const T = {
       sheetTitle: 'Año en píxeles',
       file: 'ano-en-pixeles',
     },
-    nav: { print: 'Plantillas', maker: 'Creador online', compare: 'Apps comparadas', privacy: 'Privacidad' },
+    nav: { print: 'Plantillas', maker: 'Creador online', compare: 'Apps comparadas', privacy: 'Privacidad', legal: 'Aviso legal' },
     footer: 'Chroma: Color Year in Pixels, de Baltasar Jiménez.',
   },
   pt: {
@@ -233,7 +233,7 @@ const T = {
       keyDemoNote: 'Legenda de exemplo',
       appH: 'Ou escolha a cor a partir de uma foto',
       appP1: 'O Chroma é um ano em pixels no celular. Tire uma foto por dia: o Chroma encontra as cores dela, você escolhe uma e ela entra na sua grade com um nome.',
-      appP2: `Em 31 de dezembro, seu ${YEAR} pode ser 365 cores que você viu de verdade. Sem lista de humores para escolher, sem anúncios, e suas fotos não saem do celular.`,
+      appP2: `Em 31 de dezembro, seu ${YEAR} pode ser 365 cores que você viu de verdade. Sem lista de humores para escolher, suas fotos não saem do celular e a versão grátis tem só um banner pequeno que o Pro remove.`,
       appAlt: 'Chroma no iPhone: uma foto do pôr do sol e a cor pêssego tirada dela',
       ideasH: 'Ideias de ano em pixels: o que cada cor pode significar',
       ideasP: 'Escolha uma coisa só e dê a ela de 4 a 6 cores. Com menos cores, os padrões aparecem mais.',
@@ -287,7 +287,7 @@ const T = {
       sheetTitle: 'Ano em pixels',
       file: 'ano-em-pixels',
     },
-    nav: { print: 'Modelos', maker: 'Criador online', compare: 'Apps comparados', privacy: 'Privacidade' },
+    nav: { print: 'Modelos', maker: 'Criador online', compare: 'Apps comparados', privacy: 'Privacidade', legal: 'Aviso legal' },
     footer: 'Chroma: Color Year in Pixels, de Baltasar Jiménez.',
   },
 }
@@ -362,10 +362,13 @@ document.querySelectorAll('[data-store="play"]').forEach(function(e){var x=new U
 document.querySelectorAll('[data-store="apple"]').forEach(function(e){var x=new URL(e.href);x.searchParams.set("ct",(s+"-"+n).slice(0,40));e.href=x})})()</script>`
 
 
+// The legal notice is written in en and es only; the pt pages send to the Spanish half.
+const legalHref = (lang) => `/legal.html${lang === 'en' ? '' : '#es'}`
+
 function footer(lang) {
   const t = T[lang]
   return `<footer><div class="wrap"><span>${esc(t.footer)}</span><nav aria-label="${esc(t.nav.privacy)}">
-<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="${COMPARE.yip.path[lang]}">${t.nav.compare}</a><a href="/">${t.nav.privacy}</a></nav></div></footer>`
+<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="${COMPARE.yip.path[lang]}">${t.nav.compare}</a><a href="/">${t.nav.privacy}</a><a href="${legalHref(lang)}">${t.nav.legal}</a></nav></div></footer>`
 }
 
 const appJson = (lang) => ({
@@ -593,7 +596,7 @@ const CMP = {
     tm: (n) => `${n} ${n.includes(' and ') ? 'are trademarks' : 'is a trademark'} of ${n.includes(' and ') ? 'their owners' : 'its owner'}. Chroma is not affiliated with ${n.includes(' and ') ? 'them' : 'it'}.`,
     fix: (m) => `Spotted something out of date? Write to <a href="mailto:${m}">${m}</a> and it gets fixed.`,
     appH: 'Try Chroma for a week',
-    appP: 'Take one photo a day for seven days and look at the row of colors it leaves. If it is not for you, nothing was uploaded and there is nothing to cancel.',
+    appP: 'Take one photo a day for seven days and look at the row of colors it leaves. If it is not for you, your photos never left your phone and there is nothing to cancel.',
     more: 'More comparisons', paper: `Prefer paper? The free ${YEAR} year in pixels printables`,
     and: ' and ', film: '1 s',
   },
@@ -606,7 +609,7 @@ const CMP = {
     tm: (n) => `${n} ${n.includes(' y ') ? 'son marcas de sus dueños' : 'es una marca de su dueño'}. Chroma no tiene relación con ${n.includes(' y ') ? 'ellas' : 'ella'}.`,
     fix: (m) => `¿Ves algo desactualizado? Escribe a <a href="mailto:${m}">${m}</a> y se corrige.`,
     appH: 'Prueba Chroma una semana',
-    appP: 'Haz una foto al día durante siete días y mira la fila de colores que te queda. Si no es para ti, no se subió nada y no hay nada que cancelar.',
+    appP: 'Haz una foto al día durante siete días y mira la fila de colores que te queda. Si no es para ti, tus fotos no salieron del móvil y no hay nada que cancelar.',
     more: 'Más comparativas', paper: `¿Prefieres papel? Las plantillas gratis del año en píxeles ${YEAR}`,
     and: ' y ', film: '1 s',
   },
@@ -619,7 +622,7 @@ const CMP = {
     tm: (n) => `${n} ${n.includes(' e ') ? 'são marcas dos seus donos' : 'é uma marca do seu dono'}. O Chroma não tem relação com ${n.includes(' e ') ? 'eles' : 'ele'}.`,
     fix: (m) => `Viu algo desatualizado? Escreva para <a href="mailto:${m}">${m}</a> e a gente corrige.`,
     appH: 'Experimente o Chroma por uma semana',
-    appP: 'Tire uma foto por dia durante sete dias e veja a fileira de cores que fica. Se não for para você, nada foi enviado e não há nada para cancelar.',
+    appP: 'Tire uma foto por dia durante sete dias e veja a fileira de cores que fica. Se não for para você, suas fotos não saíram do celular e não há nada para cancelar.',
     more: 'Mais comparações', paper: `Prefere papel? Os modelos grátis do ano em pixels ${YEAR}`,
     and: ' e ', film: '1 s',
   },
@@ -769,7 +772,7 @@ for (const paths of [...Object.values(PAGES), ...Object.values(COMPARE).map((c) 
     urls.push(`<url><loc>${SITE + paths[lang]}</loc><lastmod>${TODAY}</lastmod>${alts}</url>`)
   }
 }
-for (const p of ['/', '/terms.html', '/delete.html']) urls.push(`<url><loc>${SITE + p}</loc></url>`)
+for (const p of ['/', '/terms.html', '/delete.html', '/legal.html']) urls.push(`<url><loc>${SITE + p}</loc></url>`)
 writeFileSync(join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}

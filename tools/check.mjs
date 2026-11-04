@@ -1,5 +1,6 @@
 // Checks the built pages: every sitemap URL has its file, a canonical to itself, reciprocal hreflang,
-// a title and description of sane length, an OG image that exists, and a 2027 grid of 365 days.
+// a title and description of sane length, an OG image that exists, a link to the legal notice, and a 2027
+// grid of 365 days. It also checks the pages written by hand and app-ads.txt.
 //   node tools/check.mjs <site-root-dir> <https://domain>
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
@@ -22,6 +23,7 @@ for (const url of locs) {
   const og = get(/<meta property="og:image" content="([^"]+)"/)
   if (!og || !existsSync(join(root, og.replace(site, '')))) fail.push(`${url}: og image`)
   if ((html.match(/<h1[\s>]/g) || []).length !== 1) fail.push(`${url}: one h1`)
+  if (!html.includes('href="/legal.html')) fail.push(`${url}: no link to the legal notice`)
   if (/[—–“”‘’…→•× ]/.test(html)) fail.push(`${url}: non-ASCII punctuation`)
   pages[url] = Object.fromEntries([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => [m[1], m[2]]))
   for (const m of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)) {
@@ -36,6 +38,27 @@ for (const [url, alts] of Object.entries(pages)) {
     else if (!Object.values(pages[href]).includes(url)) fail.push(`${url}: hreflang ${lang} not reciprocal`)
   }
 }
+// The pages written by hand (policy, terms, delete, legal notice): they exist, the sitemap lists them, they use
+// ASCII punctuation, every local link resolves and each one links to the legal notice.
+const TYPO = /[\u2014\u2013\u201C\u201D\u2018\u2019\u2026\u2192\u2022\u00D7\u00A0]/
+for (const f of ['index.html', 'terms.html', 'delete.html', 'legal.html']) {
+  const file = join(root, f)
+  if (!existsSync(file)) { fail.push(`${f}: no file`); continue }
+  const html = readFileSync(file, 'utf8')
+  const loc = f === 'index.html' ? site + '/' : `${site}/${f}`
+  if (!sitemap.includes(`<loc>${loc}</loc>`)) fail.push(`${f}: not in the sitemap`)
+  if (TYPO.test(html)) fail.push(`${f}: non-ASCII punctuation`)
+  if (f !== 'legal.html' && !html.includes('href="/legal.html')) fail.push(`${f}: no link to the legal notice`)
+  for (const m of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)) {
+    const p = m[1].endsWith('/') ? m[1] + 'index.html' : m[1]
+    if (!existsSync(join(root, p)) && !existsSync(join(root, p + '.html'))) fail.push(`${f}: broken ${m[1]}`)
+  }
+}
+// app-ads.txt: exactly the AdMob line of the publisher, in the root; robots.txt must not hide it.
+const adsFile = join(root, 'app-ads.txt')
+if (!existsSync(adsFile)) fail.push('app-ads.txt: no file')
+else if (readFileSync(adsFile, 'utf8').trim() !== 'google.com, pub-1605179202100483, DIRECT, f08c47fec0942fa0') fail.push('app-ads.txt: not the AdMob line')
+if (/^\s*Disallow:\s*\/(app-ads\.txt)?\s*$/m.test(readFileSync(join(root, 'robots.txt'), 'utf8'))) fail.push('robots.txt: blocks app-ads.txt')
 const days = (y) => Array.from({ length: 12 }, (_, m) => new Date(Date.UTC(y, m + 1, 0)).getUTCDate()).reduce((a, b) => a + b)
 if (existsSync(join(root, 'yip/sheets/en-classic-a4.svg'))) {
   const cells = (readFileSync(join(root, 'yip/sheets/en-classic-a4.svg'), 'utf8').match(/class="c"/g) || []).length

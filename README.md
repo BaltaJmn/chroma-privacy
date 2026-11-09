@@ -11,6 +11,7 @@ by GitHub Pages from `main`, behind Cloudflare.
 | `delete.html` | How to delete the account, with or without the app (Play's deletion URL, also `/delete`) |
 | `legal.html` | Legal notice (LSSI art. 10), English and Spanish, linked from every page's footer (the pt pages link to its Spanish half). One email for the whole site (baltajmn@gmail.com), the same owner details as the FlowTime site |
 | `app-ads.txt` | The AdMob publisher line (`google.com, pub-1605179202100483, DIRECT, f08c47fec0942fa0`, the same as FlowTime), for the app's free version, which shows a banner ad. Served as plain text from the root by Pages; `robots.txt` does not hide it |
+| `config.json` | The app's remote switch (from 1.11.0): `{"ads": false}` turns the banner, the consent form and the tracking prompt off on every phone without a release; `true` turns them back on. Read at each start by free users only; unreadable or unreachable changes nothing, never read means on. Pages and Cloudflare cache it for about 10 minutes |
 | `404.html` | Any unknown path; for `/i/<code>`, the invitation for someone without the app, with the store of their phone only (Google Play on Android, App Store on iPhone and iPad, both on a computer) |
 | `.well-known/` | `assetlinks.json` and `apple-app-site-association`: invitation links open the app |
 | `.nojekyll` | Without it Pages runs Jekyll, which drops `.well-known` and the links stop opening the app |

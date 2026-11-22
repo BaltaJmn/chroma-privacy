@@ -368,7 +368,7 @@ const legalHref = (lang) => `/legal.html${lang === 'en' ? '' : '#es'}`
 function footer(lang) {
   const t = T[lang]
   return `<footer><div class="wrap"><span>${esc(t.footer)}</span><nav aria-label="${esc(t.nav.privacy)}">
-<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="${COMPARE.yip.path[lang]}">${t.nav.compare}</a><a href="/">${t.nav.privacy}</a><a href="${legalHref(lang)}">${t.nav.legal}</a><a href="https://testers.baltajmn.dev/${lang === 'es' ? 'es/' : ''}">Test4Test: 12 testers</a></nav></div></footer>`
+<a href="${PAGES.print[lang]}">${t.nav.print}</a><a href="${PAGES.maker[lang]}">${t.nav.maker}</a><a href="${COMPARE.yip.path[lang]}">${t.nav.compare}</a><a href="/">${t.nav.privacy}</a><a href="${legalHref(lang)}">${t.nav.legal}</a><a href="https://testers.baltajmn.dev/${lang === 'es' ? 'es/' : ''}">Test4Test: 12 testers</a><a href="https://baltajmn.dev/">More apps by BaltaJmn</a></nav></div></footer>`
 }
 
 const appJson = (lang) => ({
